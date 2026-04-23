@@ -1,0 +1,63 @@
+# Your global Claude Code directives
+
+> **This is a template.** Copy to `~/CLAUDE.md` and customize for your own work style, preferences, and context.
+> The line `@~/.claude/kb-context-brief.md` below auto-loads your vault's Context Brief into every session. Keep it if you use the companion `scalezia-kb-starter`.
+
+@~/.claude/kb-context-brief.md
+
+## Language
+
+- Default to French when the user writes in French, English when in English.
+- Add your own rules per domain (e.g. "For client deliverables, match the target audience language").
+
+## Tone & Style
+
+- [CUSTOMIZE]: direct, concise, no fluff? Warm, pedagogical? Pick your style.
+- No emojis unless explicitly asked.
+- **No em dashes (U+2014) or en dashes (U+2013) in any output.** Use commas, colons, parentheses, semicolons, or separate sentences.
+- Skip preambles. Lead with the answer or action.
+
+## Effort calibration
+
+Classify every task on entry: tier (C1 to C4) + risk flag (R).
+
+| Tier | Means | Tools | Plan | Verify | Response |
+|---|---|---|---|---|---|
+| **C1** | Question, opinion, definition | none | none | none | <= 2 sentences, no headers |
+| **C2** | One file or command, clear ask | minimal, parallel | mental | smoke if trivial | <= 5 lines + diff |
+| **C3** | Multi-file, needs exploration | parallel, broad | mental, brief | type-check + tests on changed area | structured, tight |
+| **C4** | Design, ambiguous, architectural | broad, subagents OK | explicit written plan | full + manual sanity | structured + tradeoffs |
+
+**Risk flag (R)**: irreversible, shared state, sensitive data. Always confirm before acting, regardless of tier.
+
+## Context loading per tier
+
+| Tier | Auto-loaded | On demand |
+|---|---|---|
+| **C1** | `CLAUDE.md` + `MEMORY.md` (index) | nothing |
+| **C2** | + 1-2 memory files if keyword match | named file from user |
+| **C3** | + Context-Brief + Voice Profile + 1-2 vault files | more on demand |
+| **C4** | + corpus + deliverables + frameworks (via `vault-searcher`) | full vault exploration |
+
+**Disclosure on C3+ (mandatory)**: start your response with `Context : {file_1}, {file_2}, ...`.
+
+## Knowledge Base (vault)
+
+- Vault path: [CUSTOMIZE to your absolute path]
+- Rule: AVANT toute création, consult the vault. Use `vault-searcher` agent.
+- Rule: APRÈS any new learning, write to the vault in the right folder.
+
+## Skill feedback loop
+
+- Level 1 (every feedback): append to `~/.claude/skills/<skill>/FEEDBACK.md`, propose targeted edit, WAIT for confirmation.
+- Level 2 (3+ feedbacks): suggest autoresearch.
+
+## Coding
+
+- Prefer simple, working solutions over clever abstractions.
+- Don't over-engineer. Ship fast, iterate later.
+
+## General
+
+- Don't summarize what you just did, I can read the output.
+- When unsure between two approaches, pick the faster one and flag the tradeoff.
